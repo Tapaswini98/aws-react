@@ -1,6 +1,15 @@
-import React from 'react'
-import menuLinksData from './data/menu_links.json'
+import React, { useState, useEffect } from 'react'
+//import menuLinksData from './data/menu_links.json'
 export default function Header() {
+    const [menuLinksData, setMenuLinksData] = useState([]);
+    const loadMenuLinksData = async()=>{
+        const resp = await fetch("https://udkz91dbjf.execute-api.us-east-1.amazonaws.com/Production/menuLinks");
+        const jsonData = await resp.json();
+        setMenuLinksData(jsonData);
+    }
+    useEffect(() => {
+            loadMenuLinksData()
+    }, [])
     return (
         <div>
             <header id="intro">
@@ -18,7 +27,7 @@ export default function Header() {
                         <ul>
                             {
                                 menuLinksData.map((link) => {
-                                   return <li><a className={`icon ${link.class}`} href={`#${link.href}`}><span>{link.text}</span></a></li>
+                                    return <li><a className={`icon ${link.class}`} href={`#${link.href}`}><span>{link.text}</span></a></li>
                                 })
                             }
                         </ul>
